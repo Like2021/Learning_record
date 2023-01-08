@@ -1,8 +1,8 @@
 1.安装cuda和cudnn
-Link:
+Link:https://blog.csdn.net/weixin_37926734/article/details/123033286
 
-3.安装anaconda
+2.安装anaconda
 
-4.安装pycharm
+3.安装pycharm
 
-5.配置paddle环境
+4.配置paddle环境
