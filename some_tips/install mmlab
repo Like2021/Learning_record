@@ -1,0 +1,18 @@
+# instal mmlab
+
+# 1.install mmcv-full 填上cuda和torch的版本就行,pip会自动适配
+# 这里的cuda,是本地的cuda,不是虚拟环境里的cuda
+pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/{cu_version}/{torch_version}/index.html
+
+# eg:pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.90/index.html
+
+# 2.install mmdet 尽量别去指定版本,pip会自动适配
+pip install mmdet
+
+# 3.install mmsegmentation
+pip install mmsegmentation
+
+# 4.install mmdetection3D
+git clone {git_link}
+cd mmdetection3d
+pip install -v -e . # or "python setup.py develop"

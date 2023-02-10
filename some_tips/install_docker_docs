@@ -1,0 +1,6 @@
+# 安装docker之后
+# 设置docker以root权限，如此便不用再使用sudo命令
+$ sudo gpasswd -a username docker
+output-->Adding user qard to group docker
+$ newgrp docker
+# 后面就可以正常使用docker命令了
