@@ -18,3 +18,4 @@ github中md文档记录的链接:
 
 命令行:`python -m pip install paddlepaddle-gpu==2.4.1.post112 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html`
 
+git项目更新：https://blog.csdn.net/weixin_39861428/article/details/123797742
