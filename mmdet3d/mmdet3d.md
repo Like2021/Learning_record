@@ -43,11 +43,17 @@ pip install -v -e . # or "python setup.py develop"
 
 
 
-# 1 简单的训练和推理
+# 1 文档教程
 
-## 1.1 使用已有模型在标准数据集上进行训练和推理
+链接：[mmdet3d docs](https://mmdetection3d.readthedocs.io/zh_CN/latest/getting_started.html)**（此链接即安装参考链接2）**
 
-### 使用单卡训练
+
+
+## 1.1 简单的训练和推理
+
+### 1.1.1 使用已有模型在标准数据集上进行训练和推理
+
+#### 使用单卡训练
 
 ```bash
 python tools/train.py ${CONFIG_FILE} [optional arguments]
@@ -57,13 +63,15 @@ python tools/train.py ${CONFIG_FILE} [optional arguments]
 
 
 
-# 2 教程
+## 1.2 教程
 
-# 2.1 学习配置文件
+### 1.2.1 学习配置文件
 
 在`config/_base_`文件夹下有4个基础组件，分别是：dataset，model，schedule，default runtime。
 
-### 配置文件的命名风格
+
+
+#### 配置文件的命名风格
 
 ```
 {model}_[model setting]_{backbone}_{neck}_[norm setting]_[misc]_[gpu x batch_per_gpu]_{schedule}_{dataset}
@@ -71,17 +79,15 @@ python tools/train.py ${CONFIG_FILE} [optional arguments]
 
 `{xxx}` 是被要求填写的字段而 `[yyy]` 是可选的。
 
-- `{model}`：模型种类，例如 `hv_pointpillars` (Hard Voxelization PointPillars)、`VoteNet` 等。
-- `[model setting]`：某些模型的特殊设定。
-- `{backbone}`： 主干网络种类例如 `regnet-400mf`、`regnet-1.6gf` 等。
-- `{neck}`：模型颈部的种类包括 `fpn`、`secfpn` 等。
-- `[norm_setting]`：如无特殊声明，默认使用 `bn` (Batch Normalization)，其他类型可以有 `gn` (Group Normalization)、`sbn` (Synchronized Batch Normalization) 等。
-  `gn-head`/`gn-neck` 表示 GN 仅应用于网络的头部或颈部，而 `gn-all` 表示 GN 用于整个模型，例如主干网络、颈部和头部。
-- `[misc]`：模型中各式各样的设置/插件，例如 `strong-aug` 意味着在训练过程中使用更强的数据增广策略。
-- `[batch_per_gpu x gpu]`：每个 GPU 的样本数和 GPU 数量，默认使用 `4x8`。
-- `{schedule}`：训练方案，选项是 `1x`、`2x`、`20e` 等。
-  `1x` 和 `2x` 分别代表训练 12 和 24 轮。
-  `20e` 在级联模型中使用，表示训练 20 轮。
-  对于 `1x`/`2x`，初始学习率在第 8/16 和第 11/22 轮衰减 10 倍；对于 `20e`，初始学习率在第 16 和第 19 轮衰减 10 倍。
-- `{dataset}`：数据集，例如 `nus-3d`、`kitti-3d`、`lyft-3d`、`scannet-3d`、`sunrgbd-3d` 等。
-  当某一数据集存在多种设定时，我们也标记下所使用的类别数量，例如 `kitti-3d-3class` 和 `kitti-3d-car` 分别意味着在 KITTI 的所有三类上和单独车这一类上进行训练。
+
+
+# 2 官方知乎教程
+
+链接：[知乎](https://zhuanlan.zhihu.com/p/478307528)**（带你玩转3D检测和分割系列）**
+
+
+
+## 2.1 整体框架介绍
+
+**链接：[知乎](https://zhuanlan.zhihu.com/p/478307528)**
+

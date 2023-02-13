@@ -20,11 +20,14 @@ $ ssh-keygen -t rsa -C "${your_email_of_github}"
 ssh -T git@github.com
 ```
 
-## 2 本地新建仓库并推送到远程仓库
+## 1 本地新建仓库并推送到远程仓库
 
 ```bash
 # 初始化仓库
 git init
+
+# 和远程仓库建立映射关系
+git remote add origin ${repository_SSH}
 
 # 增加要推送的文件
 git add . 
@@ -32,6 +35,7 @@ git add .
 # 提交commit
 git commit -m "description"
 
-# 
+# 推送项目
+git push -u origin master
 ```
 
