@@ -22,7 +22,7 @@ ssh -T git@github.com
 
 ## 1 本地新建仓库并推送到远程仓库
 
-```bash
+```shell
 # 初始化仓库
 git init
 
@@ -39,3 +39,16 @@ git commit -m "description"
 git push -u origin master
 ```
 
+# 2 git中的Stage和Unstage
+
+当利用`git add ./`和`git status`更新本地仓库到暂存区时，提示：
+
+> On branch master
+> Your branch is up to date with 'origin/master'.
+>
+> Changes to be committed:
+>   (use "git restore --staged <file>..." to unstage)
+
+参考：https://blog.csdn.net/Jackson_Wen/article/details/125423700
+
+git 
