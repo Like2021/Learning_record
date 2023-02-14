@@ -33,22 +33,29 @@ git remote add origin ${repository_SSH}
 git add . 
 
 # 提交commit
-git commit -m "description"
+git commit -m "${your_description}"
 
 # 推送项目
 git push -u origin master
 ```
 
-# 2 git中的Stage和Unstage
+# 2 每日更新本地仓库到GitHub
 
-当利用`git add ./`和`git status`更新本地仓库到暂存区时，提示：
+```shell
+# 添加修改到暂存区
+git add ./
 
-> On branch master
-> Your branch is up to date with 'origin/master'.
->
-> Changes to be committed:
->   (use "git restore --staged <file>..." to unstage)
+# 提交commit
+git commit -m "${your_description}"
 
-参考：https://blog.csdn.net/Jackson_Wen/article/details/125423700
+# 查看git状态
+git status
 
-git 
+# 推送修改
+git push
+```
+
+
+
+
+
