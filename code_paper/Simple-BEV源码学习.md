@@ -53,7 +53,7 @@ translation和rotation就是对应的平移和旋转关系
 
 先看一下README.md
 
-![img](https://img-blog.csdnimg.cn/818697faec6b4454804a394824c8c5b8.png)![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+![img](https://img-blog.csdnimg.cn/818697faec6b4454804a394824c8c5b8.png)
 
 规定了一些变量命名标准, (最开始没看, 都有点看不懂一些变量的含义)
 
@@ -152,7 +152,7 @@ class Segnet(nn.Module):
             self.xyz_camA = None
 ```
 
-![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+
 
 **Segnet类的前向传播过程:**
 
@@ -266,7 +266,7 @@ class Segnet(nn.Module):
         return raw_e, feat_e, seg_e, center_e, offset_e
 ```
 
-![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+
 
 论文**Architecture**部分:
 
@@ -325,7 +325,7 @@ class UpsamplingConcat(nn.Module):
         return self.conv(x_to_upsample)
 ```
 
-![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+
 
 3. 将预定义的3D坐标volume投影到所有特征图中, 并对特征进行双线性采样, 从而从每个相机中生成3D特征volume, 然后通过判断3D坐标是否落在相机视锥内, 来同时计算每个相机的二进制"有效"volume
 
@@ -383,7 +383,7 @@ class UpsamplingConcat(nn.Module):
         return values
 ```
 
-![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+
 
 4. 在volume集合上取一个有效的加权平均值, 将表示简化为单个3Dvolume的特征, 形状为C*Z*Y*X
 
@@ -408,7 +408,7 @@ def reduce_masked_mean(x, mask, dim=None, keepdim=False):
     return mean
 ```
 
-![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+
 
 5. 重新排列3D特征volume尺寸, C*X*Y*X -> (CxY)*Z*X, 生成高维BEV特征图, 将RGB特征和雷达特征连接, 并应用3*3卷积核压缩CxY维
 
@@ -424,7 +424,7 @@ feat_bev_ = feat_mem.permute(0, 1, 3, 2, 4).reshape(B, self.feat2d_dim*Y, Z, X) 
 feat_bev = self.bev_compressor(feat_bev_)  # 输出是(1, 128, 200, 200)
 ```
 
-![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
+
 
 6. 使用Resnet-18的三个模块处理BEV特征, 生成三个特征图, 然后使用具有双线性上采样的加性跳跃连接, 最后应用特征任务的头
 
@@ -543,7 +543,5 @@ class UpsamplingAdd(nn.Module):
         x = self.upsample_layer(x)
         return x + x_skip
 ```
-
-![点击并拖拽以移动](data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw==)
 
 ------
