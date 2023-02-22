@@ -196,10 +196,6 @@ fcitx-config-gtk3
 
 ## 1.Install
 
-自己的URL： https://api.touhou.center/link/IOlfRBcwgHIi41pV?clash=1
-
-张sir的URL：https://line.stotik.com/link/u43QDXIZaiWLy1kp
-
 **配置手动的代理**
 
 ![image-20230222140126763](install_ubuntu/image-20230222140126763.png)
