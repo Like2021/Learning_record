@@ -26,7 +26,7 @@ bash ./Anaconda3-2022.10-Linux-x86_64.sh
 
 ## VS Code
 
-直接在`ubuntu software`中安装，
+最开始在`ubuntu software`中安装，但安装好之后输入不了中文，于是又重新去官网用`.deb`的方式下载安装。
 
 首先安装`gcc，g++，gdb`
 
