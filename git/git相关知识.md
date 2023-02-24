@@ -1,4 +1,4 @@
-## 0 安装git
+# 0 安装git
 
 ```bash
 # 安装git
@@ -20,7 +20,7 @@ ssh-keygen -t rsa -C "${your_email_of_github}"
 ssh -T git@github.com
 ```
 
-## 1 本地新建仓库并推送到远程仓库
+# 1 本地新建仓库并推送到远程仓库
 
 ```shell
 # 初始化仓库
@@ -54,8 +54,4 @@ git status
 # 推送修改
 git push
 ```
-
-
-
-
 

@@ -43,6 +43,35 @@ pip install -v -e . # or "python setup.py develop"
 
 
 
+## 重装系统后，再次搭建环境
+
+### 遇到的问题
+
+**gcc版本不对**
+
+>  #error -- unsupported GNU version! gcc versions later than 10 are not supported! The nvcc flag '-allow-unsupported-compiler' can be used to override this version check; however, using an unsupported host compiler may cause compilation failure or incorrect run time execution. Use at your own risk.
+
+
+
+用`gcc --version`查看之后发现自己用`sudo apt-get install gcc`安装的是11.3.0的版本
+
+尝试：
+
+```bash
+# 先删除现有的gcc，g++
+sudo apt-get remove gcc g++
+```
+
+
+
+通过`sudo apt install build-essential`来安装，发现不行，这样安装的也是11.3.0版本，后面发现自己的是22.04的ubuntu。
+
+
+
+**选择重装20.04**
+
+
+
 ## 其他
 
 参照[项目地址](https://github.com/Sense-GVT/Fast-BEV)下载并准备好数据集和预训练模型等
