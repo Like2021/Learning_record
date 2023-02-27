@@ -6,6 +6,8 @@
 sudo dpkg -i {deb_file}
 ```
 
+
+
 ## Pycharm
 
 前往官网下载好安装包，解压后
@@ -16,6 +18,8 @@ cd pycharm-community-2022.3.2/bin/
 ./pycharm.sh
 ```
 
+
+
 ## Anaconda
 
 下载好安装包，用`bash`安装
@@ -23,6 +27,8 @@ cd pycharm-community-2022.3.2/bin/
 ```bash
 bash ./Anaconda3-2022.10-Linux-x86_64.sh
 ```
+
+
 
 ## VS Code
 
@@ -182,13 +188,17 @@ reboot
 # 4.安装googlepinyin
 sudo apt-get install fcitx-googlepinyin
 
-# 5.配置输入法
+# 5.配置输入法，没有自动加入的话，点击添加，拉到最下面
 fcitx-config-gtk3
 ```
 
 最后如果没有，重启一下就好了
 
 具体参考链接：http://t.csdn.cn/K8bae
+
+配置Fcitx的时候，选择：
+
+![image-20230227093606550](install_ubuntu/image-20230227093606550.png)
 
 
 

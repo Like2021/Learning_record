@@ -15,10 +15,28 @@ git config --global --list
 
 # 确认无误后生成公钥，此时输出的内容会显示公钥的保存目录，默认是/home/用户名/.ssh/id_rsa.pub
 ssh-keygen -t rsa -C "${your_email_of_github}"
+```
 
+
+
+在github->setting->SSH and GPG keys中new一个SSH key，
+
+![image-20230227095252864](git相关知识/image-20230227095252864.png)
+
+
+
+并在key中填入`id_rsa.pub`中的内容
+
+![image-20230227095346145](git相关知识/image-20230227095346145.png)
+
+
+
+```bash
 # 检查配置是否成功
 ssh -T git@github.com
 ```
+
+
 
 # 1 本地新建仓库并推送到远程仓库
 
