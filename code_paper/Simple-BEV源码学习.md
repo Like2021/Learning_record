@@ -18,6 +18,22 @@ pip install -r requirements.txt
 
 
 
+## 1.环境搭建-2023.3.17
+
+```bash
+# 创建环境python=3.8,命名为simplebev，并激活
+conda create -n simplebev python=3.8
+conda activate simplebev
+
+# 安装pytorch1.12+cuda11.3
+conda install pytorch=1.12.0 torchvision=0.13.0 cudatoolkit=11.3 -c pytorch
+
+# 首先cd到相应的目录下，然后下载相关依赖包
+pip install -r requirements.txt
+```
+
+
+
 ## 2.预训练模型下载
 
 ```bash
@@ -39,6 +55,7 @@ nuScenes
   |---samples
   |---sweeps
   |---v1.0-trainval 
+  |---v1.0-test
 ```
 
 

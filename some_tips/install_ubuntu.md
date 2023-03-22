@@ -50,126 +50,18 @@ gcc --version
 g++ --version
 ```
 
-然后配置`.vscode/launch.json`
+然后配置`.vscode/launch.json`和`.vscode/tasks.json`
 
-<details>
-    <summary>launch.json</summary>
-{
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "C/C++",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "preLaunchTask": "compile",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
-        },
-        {
-            "name": "C/C++: g++ 生成和调试活动文件",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": true,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "为 gdb 启用整齐打印",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "将反汇编风格设置为 Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "C/C++: g++ 生成活动文件",
-            "miDebuggerPath": "/usr/bin/gdb"
-        }
-    ]
-}
-</details>
 
-和`.vscode/tasks.json`
 
-<details>
-    <summary>launch.json</summary>
-{
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "compile",
-            "command": "g++",
-            "args": [
-                "-g",
-                "${file}",
-                "-I",
-                "${workspaceFolder}/include",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
-            ],
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": [
-                    "relative",
-                    "${workspaceRoot}"
-                ],
-                "pattern": {
-                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "column": 3,
-                    "severity": 4,
-                    "message": 5
-                }
-            },
-            "group": "build"
-        },
-        {
-            "type": "cppbuild",
-            "label": "C/C++: g++ 生成活动文件",
-            "command": "/usr/bin/g++",
-            "args": [
-                "-g",
-                "${file}",
-                "${workspaceFolder}/execute/**",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
-                "-I",
-                "${workspaceFolder}/include"
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "调试器生成的任务。"
-        }
-    ]
-}
-</details>
+上面是装错了，装成22.04的操作
+
+后面换成20.04，系统自带有gcc，g++
+
+直接安装vscode，
+
+在`Extension`中下载好c++
+
 
 
 
@@ -278,6 +170,8 @@ sudo ./{cuda_your_version.run}
 Failed to verify gcc version. See log at /var/log/cuda-installer.log for details.
 ```
 
+***（后来发现，自己装的是22.04，重装了一个20.04，系统自动安装有9.4.0的gcc和g++）***
+
 利用--override关键字强行安装
 
 ```ba
@@ -292,7 +186,7 @@ sudo ./{cuda_your_version.run} --override
 sudo gedit ~/.bashrc
 ```
 
-在最后插入：
+在最后插入：**（根据不同cuda版本进行修改）**
 
 ```bash
 export PATH="/usr/local/cuda-11.3/bin:$PATH"
