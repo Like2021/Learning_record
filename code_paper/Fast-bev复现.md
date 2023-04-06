@@ -74,7 +74,30 @@ sudo apt-get remove gcc g++
 
 ## 其他
 
-参照[项目地址](https://github.com/Sense-GVT/Fast-BEV)下载并准备好数据集和预训练模型等
+参照[项目地址](https://github.com/Sense-GVT/Fast-BEV)下载并准备好数据集
+
+```bash
+  .
+  ├── data
+  │   └── nuScenes
+  │       ├── maps
+  │       ├── maps_bev_seg_gt_2class
+  │       ├── nuscenes_infos_test_4d_interval3_max60.pkl
+  │       ├── nuscenes_infos_train_4d_interval3_max60.pkl
+  │       ├── nuscenes_infos_val_4d_interval3_max60.pkl
+  │       ├── v1.0-test
+  │       └── v1.0-trainval
+```
+
+和预训练模型
+
+```bash
+  .
+  ├── pretrained_models
+  │   ├── cascade_mask_rcnn_r18_fpn_coco-mstrain_3x_20e_nuim_bbox_mAP_0.5110_segm_mAP_0.4070.pth
+  │   ├── cascade_mask_rcnn_r34_fpn_coco-mstrain_3x_20e_nuim_bbox_mAP_0.5190_segm_mAP_0.4140.pth
+  │   └── cascade_mask_rcnn_r50_fpn_coco-mstrain_3x_20e_nuim_bbox_mAP_0.5400_segm_mAP_0.4300.pth
+```
 
 
 

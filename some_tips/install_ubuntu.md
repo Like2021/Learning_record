@@ -151,6 +151,10 @@ cd Software/Clash
 
 # Cuda and Cudnn
 
+在此之前保证显卡去的已经安装好了，即cuda driver，然后再安装cuda toolkit和cudnn
+
+
+
 cuda参考：https://zhuanlan.zhihu.com/p/122286055
 
 cudnn参考：http://t.csdn.cn/krk4M
