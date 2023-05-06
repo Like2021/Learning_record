@@ -1,3 +1,9 @@
+# 显卡驱动
+
+
+
+
+
 # 常用软件
 
 下载.deb文件，然后使用dpkg进行安装
@@ -124,6 +130,10 @@ fcitx-config-gtk3
 
 并不是`sudo`或者`su`的原因，后续在新终端中开启也可以使用。
 
+
+
+ubuntu 20.04 + clash for windows 20.21有时候也可以
+
 ## 2.Setting
 
 ```bash
@@ -151,7 +161,7 @@ cd Software/Clash
 
 # Cuda and Cudnn
 
-在此之前保证显卡去的已经安装好了，即cuda driver，然后再安装cuda toolkit和cudnn
+在此之前保证显卡驱动已经安装好了，即cuda driver，然后再安装cuda toolkit和cudnn
 
 
 
