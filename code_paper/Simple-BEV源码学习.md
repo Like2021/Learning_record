@@ -64,6 +64,18 @@ nuScenes
 
 translation和rotation就是对应的平移和旋转关系
 
+
+
+## 4. 跑通代码
+
+```bash
+# 1.提前修改好初始化参数，利用专门的脚本继续测试
+python test.py
+tensorboard --logdir=./path/to/log --bind_all
+```
+
+
+
 ------
 
 # 模型搭建与前向传播
@@ -94,8 +106,8 @@ class Segnet(nn.Module):
         assert (encoder_type in ["res101", "res50", "effb0", "effb4"])
 
         self.Z, self.Y, self.X = Z, Y, X
-        self.use_radar = use_radar
-        self.use_lidar = use_lidar
+        self.use_radar = use_radar  # 是否使用radar
+        self.use_lidar = use_lidar  # 是否使用lidar
         self.use_metaradar = use_metaradar
         self.do_rgbcompress = do_rgbcompress   
         self.rand_flip = rand_flip
@@ -107,7 +119,7 @@ class Segnet(nn.Module):
         
         # Encoder
         self.feat2d_dim = feat2d_dim = latent_dim
-        if encoder_type == "res101":
+        if encoder_type == "res101":  # 默认res101
             self.encoder = Encoder_res101(feat2d_dim)
         elif encoder_type == "res50":
             self.encoder = Encoder_res50(feat2d_dim)
