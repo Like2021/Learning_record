@@ -256,7 +256,7 @@ def voxel_pooling(self, geom_feats, x):
 
 ## 1. 修改`BevEncode`
 
-### 1. 修改情况-加入注意力机制
+### 1. 加入注意力机制
 
 参考链接：[知乎](https://zhuanlan.zhihu.com/p/99261200)
 
@@ -301,7 +301,7 @@ class AttentionBevEncode(BevEncode):
         return x
 ```
 
-### 2. nuScenes验证集效果
+#### nuScenes验证集效果
 
 1. 加入`CBAM`模块
 2. 加入`LKA`模块
@@ -310,9 +310,50 @@ class AttentionBevEncode(BevEncode):
 
 
 
+感觉没啥用
+
+### 2. 加入RepLKNet
+
+```python
+from src.RepLKNet import create_RepLKNet31B
+
+
+class RepLKNetBevEncode(BevEncode):
+    def __init__(self, inC, outC):
+        super(RepLKNetBevEncode, self).__init__(inC=inC, outC=outC)
+
+        self.backbone = create_RepLKNet31B(small_kernel_merged=False)
+
+        self.stage1 = self.backbone.stages[0]
+        self.trans1 = self.backbone.transitions[0]
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+
+        # resnet-18的两个编码层
+        x1 = self.layer1(x)
+
+        # 这个层会将尺寸图变成1/2
+        x = self.layer2(x1)
+
+        x = self.stage1(x)
+        x = self.trans1(x)
+
+        x = self.up1(x, x1)
+        x = self.up2(x)
+
+        return x
+```
+
+
+
+
+
 ## 2. 修改`CamEncode`
 
-### 1. 修改情况-`LKA`与`ConvNeXt`的结合
+### 1. `LKA`与`ConvNeXt`的结合
 
 ```python
 class ConvnextCamEncode(CamEncode):
@@ -320,8 +361,12 @@ class ConvnextCamEncode(CamEncode):
         super(ConvnextCamEncode, self).__init__(D=D, C=C, downsample=downsample)
 
         self.backbone = convnext_tiny(True)
+        # 总体channel变化：3 -> 96 -> 192 -> 384 -> 768
+        self.channels = [96, 192]
+        self.lka_attention1 = Attention(self.channels[0])
+        self.lka_attention2 = Attention(self.channels[1])
 
-        self.myUp = Up(384+768, 512)  # 用最后两个层进行上采样+拼接
+        self.myUp = Up(384+768, 512)
 
     def get_eff_depth(self, x):
         # 保存特征图尺寸变化的层输出
@@ -330,7 +375,10 @@ class ConvnextCamEncode(CamEncode):
         # 遍历stem下采样+stage
         for i in range(4):
             x = self.backbone.downsample_layers[i](x)
-
+            if i == 0:
+                x = self.lka_attention1(x)
+            if i == 1:
+                x = self.lka_attention2(x)
             x = self.backbone.stages[i](x)
 
             # 下采样1次之后保存
@@ -339,7 +387,7 @@ class ConvnextCamEncode(CamEncode):
         # 上采样+拼接
         x = self.myUp(endpoints['reduction_4'], endpoints['reduction_3'])
 
-        return x  # (C, H, W) == (512, 8, 22)
+        return x
 ```
 
 
@@ -367,3 +415,44 @@ class ConvnextCamEncode(CamEncode):
 ## 2. Tensorboard的使用
 
 需要关闭手动代理，否则打开浏览器会报错
+
+
+
+## 3. 加入RepLKNet，默认使用`SyncBn`
+
+报错`RuntimeError: Default process group has not been initialized, please make sure to call init_process_group.`
+
+修改成False：`use_sync_bn=False`
+
+```python
+def create_RepLKNet31B(drop_path_rate=0.3, num_classes=1000, use_checkpoint=True, small_kernel_merged=False):
+    return RepLKNet(large_kernel_sizes=[31,29,27,13], layers=[2,2,18,2], channels=[128,256,512,1024],
+                    drop_path_rate=drop_path_rate, small_kernel=5, num_classes=num_classes, use_checkpoint=use_checkpoint,
+                    small_kernel_merged=small_kernel_merged, use_sync_bn=False)
+```
+
+
+
+# 知识记录
+
+## 1. 模型参数量统计
+
+```python
+# 设置cuda设备
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# 实例化模型
+model = LiftSplatShoot(grid_conf=grid_conf, data_aug_conf=data_aug_conf, outC=1).to(device)
+
+# 模型所有参数
+pytorch_total_params = sum(p.numel() for p in model.parameters())
+
+# 模型可训练参数
+trainable_pytorch_total_params1 = sum(p.numel() for p in model.bevencode.parameters() if p.requires_grad)
+trainable_pytorch_total_params2 = sum(p.numel() for p in model.camencode.parameters() if p.requires_grad)
+trainable_pytorch_total_params3 = sum(p.numel() for p in model.parameters() if p.requires_grad)
+```
+
+
+
+## 2. 注意力图可视化
+
