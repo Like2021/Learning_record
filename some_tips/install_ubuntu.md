@@ -132,7 +132,9 @@ fcitx-config-gtk3
 
 
 
-ubuntu 20.04 + clash for windows 20.21有时候也可以
+如果第二次启动还没有，那就尝试重启电脑，实验室的工作站就是这样有效的。
+
+ubuntu 20.04 + clash for windows 20.21有时候也可以。
 
 ## 2.Setting
 
