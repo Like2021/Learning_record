@@ -150,3 +150,35 @@ git commit --amend
 # 然后进入vim编辑器，完成修改后，保存
 ```
 
+
+
+# 6 合并某分支到当前分支
+
+仓库中有主分支如`main`或`master`，另有开发分支如`dev`等
+
+如确定需要将`dev`分支，合并到`main`主分支
+
+```shell
+# 切换到需要合并的分支
+git checkout dev
+
+# 再切换到主分支
+git checkout main
+
+# 进行合并
+git merge dev
+
+# 合并之后提交到main上
+git push origin main
+```
+
+
+
+# 7 在非私人电脑上，利用HTTPS进行克隆，而非配置SSH
+
+单独拉取需要的分支
+
+```shell
+git clone -b ${指定拉取的分支名} ${仓库对应的HTTPS}}
+```
+

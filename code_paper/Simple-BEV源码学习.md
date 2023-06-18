@@ -68,10 +68,20 @@ translation和rotation就是对应的平移和旋转关系
 
 ## 4. 跑通代码
 
-```bash
+```shell
 python train_nuscenes.py
 tensorboard --logdir=./path/to/log --bind_all
 ```
+
+
+
+### 问题
+
+- 报错`cannot import name 'container_abcs' from 'torch._six'`
+
+原因：`timm`中的`helpers.py`中导入的包出现了更换，具体可以google
+
+解决方法：在最后出错的文件中，将`from torch._six import container_abcs`注释，加上`import collections.abc as container_abcs`
 
 
 
