@@ -190,3 +190,13 @@ $ ade start
 # need use PATH:/usr/local/bin
 ```
 
+
+
+# 8. VSCode
+
+## 8.1 联合Anacoda管理python环境
+
+为在`vscode`中使用`conda`创建的环境：
+
+1. 先在`vscode`中下载`python`插件
+2. 在`vscode`中使用`ctrl+p`打开搜索，然后输入`> select interpreter`，在弹出的页面选择相应的解释器
