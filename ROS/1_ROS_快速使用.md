@@ -35,7 +35,7 @@ catkin_make
 
 如下图所示，说明成功了。
 
-![catkin_make构建结果](ROS_Quickly_use/Screenshot from 2023-06-14 19-07-34.png)
+![catkin_make构建结果](1_ROS_快速使用/Screenshot from 2023-06-14 19-07-34.png)
 
 
 
@@ -139,6 +139,8 @@ catkin_make
 ```
 
 生成`build`和`devel`等文件...
+
+其中可执行文件在`devel/lib/first_project`下。
 
 
 

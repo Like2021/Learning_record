@@ -1,4 +1,9 @@
+# 本项目旨在存放各类学习记录:smile_cat:
+
+
+
 github中md文档记录的链接:
+
 > https://docs.github.com/zh/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
 
 选用的cuda11.3 cudnn8.2 paddle2.4.1
