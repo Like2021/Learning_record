@@ -427,5 +427,5 @@ target_link_libraries(AddInts_Client
 )
 ```
 
-**编译和执行步骤如[自定义话题](#5. 配置`CMakeLists.txt`，编译并执行)所示**
+**编译和执行步骤如之前一致**
 
