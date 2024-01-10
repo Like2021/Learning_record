@@ -70,6 +70,29 @@ class PositionalEncoding(nn.Module):
 
 因为这里的输入*x*已经是经过`Word Embedding`即线性变化之后的特征，所以这里直接相加即可实现“嵌入“。(具体分析可以靠参考博客)
 
+#### Padding Mask
+
+**由于输入维度可能不一致，需要进行padding**，但真正计算注意力的时候padding部分又是无意义的，这时就需要`Padding Mask`。
+
+具体实现有很多种方式，这里只介绍一种常见的，对`softmax`之前的注意力得分进行`mask`：
+
+[参考代码](https://github1s.com/harvardnlp/annotated-transformer/blob/master/the_annotated_transformer.py)
+
+```python
+def attention(query, key, value, mask=None, dropout=None):
+    "Compute 'Scaled Dot Product Attention'"
+    d_k = query.size(-1)
+    scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(d_k)
+    if mask is not None:
+        # 给需要mask的对应特征赋一个接近-inf的值
+        scores = scores.masked_fill(mask == 0, -1e9)
+    # 在softmax之后，这个-1e9就会变成0，从而实现mask
+    p_attn = scores.softmax(dim=-1)
+    if dropout is not None:
+        p_attn = dropout(p_attn)
+    return torch.matmul(p_attn, value), p_attn
+```
+
 ### Encoder
 
 第1层的`Encoder`在得到输入后会对其做不同的线性变换分别生成**QKV**三个矩阵，再进行自注意力操作，后续的`Encoder`的输入则是前一个`Encoder`的输出。
@@ -142,26 +165,9 @@ outputs = ln(outputs)
     dec = ff(dec, num_units=[self.hp.d_ff, self.hp.d_model])
 ```
 
-### Mask
+#### Attention Mask
 
 由于`Mask`方法的特殊，这里单独拎出来。
 
-具体实现有很多种方式，这里只介绍一种常见的，对`softmax`之前的注意力得分进行`mask`：
-
-[参考代码](https://github1s.com/harvardnlp/annotated-transformer/blob/master/the_annotated_transformer.py)
-
-```python
-def attention(query, key, value, mask=None, dropout=None):
-    "Compute 'Scaled Dot Product Attention'"
-    d_k = query.size(-1)
-    scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(d_k)
-    if mask is not None:
-        # 给需要mask的对应特征赋一个接近-inf的值
-        scores = scores.masked_fill(mask == 0, -1e9)
-    # 在softmax之后，这个-1e9就会变成0，从而实现mask
-    p_attn = scores.softmax(dim=-1)
-    if dropout is not None:
-        p_attn = dropout(p_attn)
-    return torch.matmul(p_attn, value), p_attn
-```
+这里的`Attention Mask`指的是`Decoder`中的操作，基本解释是：对于NLP训练，解码器只能看到前面的输入，但不能看到后面的输入，以这样的状态进行预测。
 
