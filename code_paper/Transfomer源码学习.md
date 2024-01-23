@@ -152,17 +152,17 @@ outputs = ln(outputs)
 第1层的`Decoder`的输入分别是`Encoder`的输出**Q**以及已解码的输入**KV**，后续的`Decoder`的输入则是前一个`Decoder`的输出。(每个`Decoder`都有两个多头注意力)
 
 ```python
-    # Masked self-attention (Note that causality is True at this time)
-    dec = multihead_attention(queries=dec,
-                              keys=dec,
-                              values=dec, ...)
+# Masked self-attention (Note that causality is True at this time)
+dec = multihead_attention(queries=dec,
+                          keys=dec,
+                          values=dec, ...)
 
-    # Vanilla attention
-    dec = multihead_attention(queries=dec,
-                              keys=memory,
-                              values=memory, ...)
-    ### Feed Forward
-    dec = ff(dec, num_units=[self.hp.d_ff, self.hp.d_model])
+# Vanilla attention
+dec = multihead_attention(queries=dec,
+                          keys=memory,
+                          values=memory, ...)
+### Feed Forward
+dec = ff(dec, num_units=[self.hp.d_ff, self.hp.d_model])
 ```
 
 #### Attention Mask

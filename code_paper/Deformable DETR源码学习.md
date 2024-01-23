@@ -101,6 +101,14 @@ class DeformableTransformer(nn.Module):
 
 #### MSDeformAttn
 
+对于可变形注意力机制来说，Q是嵌入有多尺度位置编码的多尺度特征图，K是参考点坐标，V是多尺度特征图。
+
+实际过程是：
+
+1. 由Q经过线性变换得到采样点偏移量和注意力权重
+2. 采样点(x, y) = 提前预设的参考点 + 偏移量**（偏移量可以学习）**
+3. 根据采样点的坐标，利用双线性采样得到对应的value，并与对应的注意力权重相乘后求和
+
 ```python
 class MSDeformAttn(nn.Module):
     def __init__(self, d_model=256, n_levels=4, n_heads=8, n_points=4):
@@ -121,7 +129,6 @@ class MSDeformAttn(nn.Module):
                           "which is more efficient in our CUDA implementation.")
 
         self.im2col_step = 64        # 用于cuda算子
-
         self.d_model = d_model       # 特征层channel = 256
         self.n_levels = n_levels     # 多尺度特征 特征个数 = 4
         self.n_heads = n_heads       # 多头 = 8
@@ -257,4 +264,57 @@ def ms_deform_attn_core_pytorch(value, value_spatial_shapes, sampling_locations,
     output = (torch.stack(sampling_value_list, dim=-2).flatten(-2) * attention_weights).sum(-1).view(N_, M_*D_, Lq_)
     return output.transpose(1, 2).contiguous()
 ```
+
+### Encoder
+
+和普通的Encoder类似，不过由可变形注意力机制替换了原本的自注意力机制，具体维度变化参考前面的注释。
+
+```python
+def forward(self, src, pos, reference_points, spatial_shapes, level_start_index, padding_mask=None):
+    """
+    src: 展平的各层特征
+    spatial_shapes: 各层特征图形状
+    level_start_index: 各层首特征索引
+    """
+    # self attention
+    # Q: src + pos, K: reference_points, V: src
+    src2 = self.self_attn(self.with_pos_embed(src, pos), reference_points, src, spatial_shapes, level_start_index, padding_mask)
+    src = src + self.dropout1(src2)
+    src = self.norm1(src)
+
+    # ffn
+    src = self.forward_ffn(src)
+
+    return src
+```
+
+### Decoder
+
+和普通的Decoder类似，不过原本的交叉注意力机制也用可变形注意力机制进行替换。
+
+```python
+def forward(self, tgt, query_pos, reference_points, src, src_spatial_shapes, level_start_index, src_padding_mask=None):
+    # self attention
+    q = k = self.with_pos_embed(tgt, query_pos)
+    tgt2 = self.self_attn(q.transpose(0, 1), k.transpose(0, 1), tgt.transpose(0, 1))[0].transpose(0, 1)
+    tgt = tgt + self.dropout2(tgt2)
+    tgt = self.norm2(tgt)
+
+    # cross attention
+    # self.cross_attn = MSDeformAttn(d_model, n_levels, n_heads, n_points)
+    tgt2 = self.cross_attn(self.with_pos_embed(tgt, query_pos),
+                           reference_points,
+                           src, src_spatial_shapes, level_start_index, src_padding_mask)
+    tgt = tgt + self.dropout1(tgt2)
+    tgt = self.norm1(tgt)
+
+    # ffn
+    tgt = self.forward_ffn(tgt)
+
+    return tgt
+```
+
+### 改进策略
+
+#### Iterative Bounding Box Refinement
 
