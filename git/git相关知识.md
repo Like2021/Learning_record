@@ -15,6 +15,10 @@ git config --global --list
 
 # 确认无误后生成公钥，此时输出的内容会显示公钥的保存目录，默认是/home/用户名/.ssh/id_rsa.pub
 ssh-keygen -t rsa -C "${your_email_of_github}"
+### 更新于2024.08.08
+# 其实只需要生成公钥就行，不需要配置全局config
+ssh-keygen -t rsa -C "${your_email_of_github}" -f ./id_rsa
+# 全局config似乎会导致本地无法配置多个Git账户
 ```
 
 
